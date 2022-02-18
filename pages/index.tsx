@@ -29,6 +29,7 @@ const Home: NextPage = () => {
 
         <Controller setCols={setCols} setRows={setRows} setFeedback={setFeedback} />
         {feedback}
+
         <Grid cols={cols} rows={rows} />
       </main>
     </div>

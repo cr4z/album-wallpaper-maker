@@ -38,3 +38,18 @@ a {
   transform: scale(1.03);
   cursor: pointer;
 }
+
+.album-container {
+  display: flex;
+}
+
+.album {
+  width: 100px;
+  height: 100px;
+  display: inline;
+}
+
+.album img {
+  width: 100px;
+  height: 100px;
+}
