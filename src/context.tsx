@@ -12,7 +12,7 @@ export function ModalContextWrapper({ children }: Props) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const providedCallbackRef = useRef<Function>();
 
-  function onAlbumSelected(src: string) {
+  function onAlbumSelectedCb(src: string) {
     if (!providedCallbackRef.current) throw new Error("Callback not provided!");
     providedCallbackRef.current(src);
   }
@@ -31,7 +31,7 @@ export function ModalContextWrapper({ children }: Props) {
       <AlbumPickerModal
         showModal={showModal}
         setShowModal={setShowModal}
-        onAlbumSelected={onAlbumSelected}
+        onAlbumSelectedCb={onAlbumSelectedCb}
       />
       {children}
     </ModalContext.Provider>

@@ -10,9 +10,9 @@ Modal.setAppElement(":root");
 interface Props {
   showModal: boolean;
   setShowModal: any;
-  onAlbumSelected: Function;
+  onAlbumSelectedCb: Function;
 }
-export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelected }: Props) {
+export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelectedCb }: Props) {
   const [searchInput, setSearchInput] = useState<string>("");
   const [tags, setTags] = useState<JSX.Element[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -78,7 +78,7 @@ export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelec
       <div className="album-container">
         <Paginator page={page} itemsPerPage={6}>
           {albumSrcs.map((src, i) => (
-            <div key={i} className="album">
+            <div key={i} className="album" onClick={() => onAlbumSelectedCb(src)}>
               <img src={src}></img>
             </div>
           ))}
