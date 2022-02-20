@@ -30,7 +30,7 @@ export function ModalContextWrapper({ children }: Props) {
     <ModalContext.Provider value={store}>
       <AlbumPickerModal
         showModal={showModal}
-        setShowModal={setShowModal}
+        onRequestClose={() => setShowModal(false)}
         onAlbumSelectedCb={onAlbumSelectedCb}
       />
       {children}

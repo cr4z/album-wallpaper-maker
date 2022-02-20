@@ -14,12 +14,12 @@ export default function Paginator({ page, itemsPerPage, children }: IPaginatorPr
 
     const newItems: JSX.Element[] = [];
     for (let i = 0; i < itemsPerPage; i++) {
-      const index = page * itemsPerPage + i;
+      const index = (page - 1) * itemsPerPage + i;
       newItems.push(children[index]);
     }
 
     setItems(newItems);
   }, [children]);
 
-  return <div className="modal-grid">{items}</div>;
+  return <>{items}</>;
 }

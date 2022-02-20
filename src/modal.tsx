@@ -7,12 +7,14 @@ import Paginator from "./paginator";
 import Modal from "react-modal";
 Modal.setAppElement(":root");
 
+const itemsPerPage = 6;
+
 interface Props {
   showModal: boolean;
-  setShowModal: any;
+  onRequestClose: () => void;
   onAlbumSelectedCb: Function;
 }
-export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelectedCb }: Props) {
+export default function AlbumPickerModal({ showModal, onRequestClose, onAlbumSelectedCb }: Props) {
   const [searchInput, setSearchInput] = useState<string>("");
   const [tags, setTags] = useState<JSX.Element[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -47,7 +49,7 @@ export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelec
   return (
     <Modal
       isOpen={showModal}
-      onRequestClose={() => setShowModal(false)}
+      onRequestClose={() => onRequestClose()}
       style={{
         overlay: { zIndex: 1000, backgroundColor: "#0005" },
         content: {
@@ -58,7 +60,7 @@ export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelec
           top: "50%", // start from center
           transform: "translate(-50%,-50%)", // adjust top "up" based on height
           width: "90%",
-          maxWidth: "90vh",
+          maxWidth: "50vh",
         },
       }}
     >
@@ -76,9 +78,16 @@ export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelec
       {tags}
 
       <div className="album-container">
-        <Paginator page={page} itemsPerPage={6}>
+        <Paginator page={page} itemsPerPage={itemsPerPage}>
           {albumSrcs.map((src, i) => (
-            <div key={i} className="album" onClick={() => onAlbumSelectedCb(src)}>
+            <div
+              key={i}
+              className="album"
+              onClick={() => {
+                onAlbumSelectedCb(src);
+                onRequestClose();
+              }}
+            >
               <img src={src}></img>
             </div>
           ))}
@@ -90,7 +99,9 @@ export default function AlbumPickerModal({ showModal, setShowModal, onAlbumSelec
           👈
         </button>
         {page}
-        <button onClick={() => changePageBy(1)}>👉</button>
+        <button disabled={page > albumSrcs.length / itemsPerPage} onClick={() => changePageBy(1)}>
+          👉
+        </button>
       </div>
       <hr />
       <button
