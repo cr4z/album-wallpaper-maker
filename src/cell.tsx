@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import { IModalContext, ModalContext } from "./context";
 
-type Props = {};
-export default function Cell({}: Props) {
+type Props = {
+  initSrc: string;
+};
+export default function Cell({ initSrc }: Props) {
   const context: IModalContext = useContext(ModalContext);
-  const [src, setSrc] = useState<string>(`https://picsum.photos/seed/${Math.random()}/1000`);
+  const [src, setSrc] = useState<string>(initSrc);
 
   function myCallback(_src: string) {
     setSrc(_src);
