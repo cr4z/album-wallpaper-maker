@@ -1,7 +1,7 @@
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
 
-type Props = { setCols: Function; setRows: Function };
-export default function Controller({ setRows, setCols }: Props) {
+type Props = { onNewCols: (x: number) => void; onNewRows: (x: number) => void };
+export default function Controller({ onNewCols, onNewRows }: Props) {
   const rowsInput = useRef<HTMLInputElement>(null);
   const colsInput = useRef<HTMLInputElement>(null);
 
@@ -69,8 +69,8 @@ export default function Controller({ setRows, setCols }: Props) {
               // execute
               console.log("asdf");
               setFeedbackStatus(false);
-              setRows(+rows);
-              setCols(+cols);
+              onNewRows(+rows);
+              onNewCols(+cols);
             }}
           >
             SET!

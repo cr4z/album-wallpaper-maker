@@ -3,13 +3,15 @@ import { IModalContext, ModalContext } from "./context";
 
 type Props = {
   initSrc: string;
+  onSrcChange: (src: string) => void;
 };
-export default function Cell({ initSrc }: Props) {
+export default function Cell({ initSrc, onSrcChange }: Props) {
   const context: IModalContext = useContext(ModalContext);
   const [src, setSrc] = useState<string>(initSrc);
 
-  function myCallback(_src: string) {
-    setSrc(_src);
+  function myCallback(newSrc: string) {
+    onSrcChange(newSrc);
+    setSrc(newSrc);
   }
 
   return (
