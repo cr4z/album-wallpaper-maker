@@ -16,6 +16,10 @@ const Home: NextPage = () => {
     gridTemplateColumns: `repeat(${cols}, auto)`,
   };
 
+  function openModal(i: number) {
+    setTargetCell(i);
+    setModalOpen(true);
+  }
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [targetCell, setTargetCell] = useState<number>(0);
 
@@ -61,8 +65,7 @@ const Home: NextPage = () => {
               <div
                 className={"cell"}
                 onClick={() => {
-                  setTargetCell(i);
-                  setModalOpen(true);
+                  openModal(i);
                 }}
               >
                 {src && <img src={src} alt="random pic" />}
