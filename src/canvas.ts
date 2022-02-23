@@ -9,7 +9,7 @@ export const generateCanvas = async (
     return img;
   });
 
-  console.log(srcs);
+  console.log(1);
 
   images = stripImages(images);
   images = await waitForImagesToLoad(images);
@@ -26,23 +26,16 @@ export const generateCanvas = async (
     for (let rowI = 0; rowI < rows; rowI++) {
       for (let colI = 0; colI < cols; colI++) {
         i++;
-        const img = new Image();
-        img.src = srcs[i];
-        ctx.drawImage(img, X(colI, imgSize), Y(rowI, imgSize), imgSize, imgSize);
+        const x = colI * imgSize;
+        const y = rowI * imgSize;
+        ctx.drawImage(images[i], x, y, imgSize, imgSize);
       }
     }
   } else throw new Error("No context produced!");
 
+  console.log("2");
   return canvas;
 };
-
-function X(value: number, imageSize: number): number {
-  return value * imageSize;
-}
-
-function Y(value: number, imageSize: number): number {
-  return value * imageSize;
-}
 
 async function waitForImagesToLoad(images: HTMLImageElement[]): Promise<HTMLImageElement[]> {
   const promises: Promise<any>[] = [];
