@@ -10,11 +10,11 @@ Modal.setAppElement(":root");
 const itemsPerPage = 6;
 
 interface Props {
-  showModal: boolean;
+  modalOpen: boolean;
   onRequestClose: () => void;
-  onAlbumSelectedCb: Function;
+  onSrcSelected: (src: string) => void;
 }
-export default function AlbumPickerModal({ showModal, onRequestClose, onAlbumSelectedCb }: Props) {
+export default function AlbumPickerModal({ modalOpen, onRequestClose, onSrcSelected }: Props) {
   const [searchInput, setSearchInput] = useState<string>("");
   const [tags, setTags] = useState<JSX.Element[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -48,7 +48,7 @@ export default function AlbumPickerModal({ showModal, onRequestClose, onAlbumSel
 
   return (
     <Modal
-      isOpen={showModal}
+      isOpen={modalOpen}
       onRequestClose={() => onRequestClose()}
       style={{
         overlay: { zIndex: 1000, backgroundColor: "#0005" },
@@ -84,7 +84,7 @@ export default function AlbumPickerModal({ showModal, onRequestClose, onAlbumSel
               key={i}
               className="album"
               onClick={() => {
-                onAlbumSelectedCb(src);
+                onSrcSelected(src);
                 onRequestClose();
               }}
             >
