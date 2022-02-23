@@ -1,8 +1,8 @@
-export const generateCanvas = async (
+async function generateCanvas(
   srcs: string[],
   cols: number,
   rows: number
-): Promise<HTMLCanvasElement> => {
+): Promise<HTMLCanvasElement> {
   let images: HTMLImageElement[] = srcs.map(src => {
     const img = new Image();
     img.src = src;
@@ -35,7 +35,7 @@ export const generateCanvas = async (
 
   console.log("2");
   return canvas;
-};
+}
 
 async function waitForImagesToLoad(images: HTMLImageElement[]): Promise<HTMLImageElement[]> {
   const promises: Promise<any>[] = [];
@@ -70,3 +70,15 @@ function stripImages(images: HTMLImageElement[]): HTMLImageElement[] {
   });
   return images;
 }
+
+function downloadCanvas(canvas: HTMLCanvasElement) {
+  const url = canvas.toDataURL();
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "album-collage-designer.png";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+export { downloadCanvas, generateCanvas };

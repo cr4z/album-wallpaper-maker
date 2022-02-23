@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { generateCanvas } from "../src/canvas";
+import { downloadCanvas, generateCanvas } from "../src/canvas";
 import Controls from "../src/controls";
 import AlbumPickerModal from "../src/modal";
 
@@ -22,16 +22,6 @@ const Home: NextPage = () => {
   }
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [targetCell, setTargetCell] = useState<number>(0);
-
-  function downloadCanvas(canvas: HTMLCanvasElement) {
-    const url = canvas.toDataURL();
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "album-collage-designer.png";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  }
 
   return (
     <>
