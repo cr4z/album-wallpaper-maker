@@ -1,19 +1,19 @@
 async function generateCanvas(
   srcs: string[],
   cols: number,
-  rows: number
+  rows: number,
+  inform: (x: string) => void
 ): Promise<HTMLCanvasElement> {
+  inform("Retrieving album covers...");
   let images: HTMLImageElement[] = srcs.map(src => {
     const img = new Image();
     img.src = src;
     return img;
   });
-
-  console.log(1);
-
   images = stripImages(images);
+  inform("Loading album covers...");
   images = await waitForImagesToLoad(images);
-
+  inform("Making your wallpaper...");
   const extents = Math.max(cols, rows);
   const imgSize = 3000 / extents;
   const canvas = document.createElement("canvas");
@@ -33,7 +33,7 @@ async function generateCanvas(
     }
   } else throw new Error("No context produced!");
 
-  console.log("2");
+  inform("");
   return canvas;
 }
 
@@ -71,7 +71,8 @@ function stripImages(images: HTMLImageElement[]): HTMLImageElement[] {
   return images;
 }
 
-function downloadCanvas(canvas: HTMLCanvasElement) {
+function downloadCanvas(canvas: HTMLCanvasElement, inform: (x: string) => void, onComplete: () => void) {
+  inform("Creating download...")
   const url = canvas.toDataURL();
   const link = document.createElement("a");
   link.href = url;
@@ -79,6 +80,8 @@ function downloadCanvas(canvas: HTMLCanvasElement) {
   document.body.appendChild(link);
   link.click();
   link.remove();
+
+  onComplete();
 }
 
 export { downloadCanvas, generateCanvas };

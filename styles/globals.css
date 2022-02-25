@@ -17,6 +17,32 @@ a {
   --size: 120px;
 }
 
+h2 {
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.mt {
+  margin-top: 1rem;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 /** CONTENT **/
 
 .main {
@@ -106,6 +132,27 @@ a {
   transform: scale(1.05);
 }
 
+.modal-contoller {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.page-display {
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #777;
+  pointer-events: none;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
 /** CONTROLLER **/
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&subset=greek-ext');
@@ -114,8 +161,8 @@ a {
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 .controller-item {
@@ -203,6 +250,11 @@ a {
 
 .button-19:disabled {
   cursor: auto;
+  background-color: #adadad;
+}
+
+.button-19:disabled:after {
+  background-color: #bdbdbd;
 }
 
 .controller-container {
@@ -219,4 +271,10 @@ a {
 .download-btn {
   width: 50%;
   max-width: 15rem;
+}
+
+.dl-feedback {
+  margin-top: 1rem;
+  columns: #333;
+  pointer-events: none;
 }

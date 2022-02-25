@@ -64,20 +64,22 @@ export default function AlbumPickerModal({ modalOpen, onRequestClose, onSrcSelec
         },
       }}
     >
-      <h1>Add an album</h1>
-      <hr />
-      <input
-        placeholder="Search for an artist or album..."
-        onChange={e => setSearchInput(e.target.value)}
-        onKeyDown={e => {
-          if (e.key === "Enter") {
-            requestNewSearch(searchInput);
-          }
-        }}
-      />
-      {tags}
+      <h2>Add an album</h2>
+      <div className="input-container mt">
+        <input
+          placeholder="Search for an artist or album..."
+          onChange={e => setSearchInput(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === "Enter") {
+              requestNewSearch(searchInput);
+            }
+          }}
+        />
+      </div>
 
-      <div className="album-container">
+      <div className="mt">{tags}</div>
+
+      <div className="album-container noselect">
         <Paginator page={page} itemsPerPage={itemsPerPage}>
           {albumSrcs.map((src, i) => (
             <div
@@ -94,24 +96,30 @@ export default function AlbumPickerModal({ modalOpen, onRequestClose, onSrcSelec
         </Paginator>
       </div>
 
-      <div>
-        <button disabled={page <= 1} onClick={() => changePageBy(-1)}>
+      <div className="controller align-items-center">
+        <button className="button-19" disabled={page <= 1} onClick={() => changePageBy(-1)}>
           👈
         </button>
-        {page}
-        <button disabled={page > albumSrcs.length / itemsPerPage} onClick={() => changePageBy(1)}>
+        <div className="page-display noselect">{page}</div>
+        <button
+          className="button-19"
+          disabled={page > albumSrcs.length / itemsPerPage}
+          onClick={() => changePageBy(1)}
+        >
           👉
         </button>
       </div>
-      <hr />
-      <button
-        color="primary"
-        onClick={async () => {
-          requestNewSearch(searchInput);
-        }}
-      >
-        Search
-      </button>
+      <div className="mt">
+        <button
+          className="button-19"
+          color="primary"
+          onClick={async () => {
+            requestNewSearch(searchInput);
+          }}
+        >
+          Search
+        </button>
+      </div>
     </Modal>
   );
 }

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { downloadCanvas, generateCanvas } from "../src/canvas";
 import Controls from "../src/controls";
 import AlbumPickerModal from "../src/modal";
@@ -11,6 +11,9 @@ const Home: NextPage = () => {
   );
   const [cols, setCols] = useState<number>(3);
   const [rows, setRows] = useState<number>(6);
+
+  const [feedback, setFeedback] = useState<string>("");
+  const [downloadInProgress, setDownloadInProgress] = useState<boolean>("");
 
   const columnStyle = {
     gridTemplateColumns: `repeat(${cols}, auto)`,
@@ -66,15 +69,30 @@ const Home: NextPage = () => {
 
         <div className="download-btn">
           <button
+            disabled={downloadInProgress}
             onClick={async () => {
-              const canvas = await generateCanvas(srcs, cols, rows);
-              downloadCanvas(canvas);
+              setDownloadInProgress(true);
+              const canvas = await generateCanvas(srcs, cols, rows, feedback => {
+                setFeedback(feedback);
+              });
+              downloadCanvas(
+                canvas,
+                feedback => {
+                  setFeedback(feedback);
+                },
+                () => {
+                  setDownloadInProgress(false);
+                  setFeedback("Download complete! Enjoy :)");
+                  setInterval(() => setFeedback(""), 3000);
+                }
+              );
             }}
             className="button-19"
           >
             download
           </button>
         </div>
+        <div className="dl-feedback">{feedback}</div>
       </main>
 
       <footer></footer>
