@@ -23,6 +23,10 @@ h2 {
   color: #333;
 }
 
+main {
+  margin: 0 2rem;
+}
+
 .mt {
   margin-top: 1rem;
 }
@@ -42,8 +46,6 @@ h2 {
   /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
-
-/** CONTENT **/
 
 .main {
   min-height: 100vh;
@@ -69,7 +71,7 @@ h2 {
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 2rem;
 }
 
 .title,
@@ -78,32 +80,42 @@ h2 {
 }
 
 .description {
-  margin: 4rem 0;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
   line-height: 1.5;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 /** GRID, CELLS, MODAL **/
 
-.grid {
-  margin: 3rem;
-  display: grid;
+.grid-container {
+  max-width: 100%;
+  margin: 3rem 0;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.grid {
+  display: grid;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cell {
   width: var(--size);
   height: var(--size);
+  overflow: hidden;
 }
 
 .cell img {
   width: var(--size);
   height: var(--size);
-  transition: all .1s ease;
+  transition: all .2s ease;
 }
 
 .cell img:hover {
-  transform: scale(1.03);
+  transform: scale(1.1);
   cursor: pointer;
 }
 

@@ -52,19 +52,21 @@ const Home: NextPage = () => {
 
         <Controls onNewCols={(x: number) => setCols(x)} onNewRows={(x: number) => setRows(x)} />
 
-        <div className="grid" style={columnStyle}>
-          {srcs.slice(0, rows * cols).map((src, i) => (
-            <>
-              <div
-                className={"cell"}
-                onClick={() => {
-                  openModal(i);
-                }}
-              >
-                {src && <img src={src} alt="random pic" />}
-              </div>
-            </>
-          ))}
+        <div className="grid-container">
+          <div className="grid" style={columnStyle}>
+            {srcs.slice(0, rows * cols).map((src, i) => (
+              <>
+                <div
+                  className="cell"
+                  onClick={() => {
+                    openModal(i);
+                  }}
+                >
+                  {src && <img src={src} alt="random pic" />}
+                </div>
+              </>
+            ))}
+          </div>
         </div>
 
         <div className="download-btn">
