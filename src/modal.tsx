@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import { getImgSrcArrayFromInput } from "./itunes";
 import Paginator from "./paginator";
 
@@ -16,35 +16,38 @@ interface Props {
 }
 export default function AlbumPickerModal({ modalOpen, onRequestClose, onSrcSelected }: Props) {
   const [searchInput, setSearchInput] = useState<string>("");
-  const [tags, setTags] = useState<JSX.Element[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [page, setPage] = useState<number>(1);
   const [albumSrcs, setAlbumSrcs] = useState<string[]>([]);
+
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
+  const mainInputRef = useRef<HTMLInputElement>(null);
 
   const changePageBy = (x: number) => {
     setPage(page + x);
   };
 
-  const requestNewSearch = async (input: string) => {
-    // add tag from user input
-    const newTag = (
-      <span className="tag" key={tags.length}>
-        <span className="tag-text" onClick={() => console.log("ontagsearch")}>
-          {input}
-        </span>
-        <span onClick={() => console.log("deletetag")}>❌</span>
-      </span>
-    );
-    setTags(tags => [...tags, newTag]);
+  const requestNewSearch = async (search: string) => {
+    if (!tags.includes(search) && tags.length < 8) {
+      setTags(tags => [...tags, search]);
+    }
 
     // set Paginator page to 1
     setPage(1);
 
     // get image srcs
-    const imgSrcs = await getImgSrcArrayFromInput(input);
+    const imgSrcs = await getImgSrcArrayFromInput(search);
 
     // update results
     setAlbumSrcs(imgSrcs);
   };
+
+  function removeTag(tag: string) {
+    const _tags = Array.from(tags);
+    const i = _tags.indexOf(tag);
+    _tags.splice(i, 1);
+    setTags(_tags);
+  }
 
   return (
     <Modal
@@ -67,17 +70,35 @@ export default function AlbumPickerModal({ modalOpen, onRequestClose, onSrcSelec
       <h2>Add an album</h2>
       <div className="input-container mt">
         <input
+          value={searchInput}
           placeholder="Search for an artist or album..."
           onChange={e => setSearchInput(e.target.value)}
           onKeyDown={e => {
             if (e.key === "Enter") {
-              requestNewSearch(searchInput);
+              searchButtonRef.current?.click();
             }
           }}
         />
       </div>
 
-      <div className="mt">{tags}</div>
+      <ul className="mt tags-container">
+        {tags.map((tagText, i) => {
+          return (
+            <li className="tag" key={i}>
+              <span
+                className="tag-text"
+                onClick={() => {
+                  setSearchInput(tagText);
+                  requestNewSearch(tagText);
+                }}
+              >
+                {tagText}
+              </span>
+              <span onClick={() => removeTag(tagText)}>❌</span>
+            </li>
+          );
+        })}
+      </ul>
 
       <div className="album-container noselect">
         <Paginator page={page} itemsPerPage={itemsPerPage}>
@@ -111,6 +132,8 @@ export default function AlbumPickerModal({ modalOpen, onRequestClose, onSrcSelec
       </div>
       <div className="mt">
         <button
+          ref={searchButtonRef}
+          disabled={searchInput === "" || searchInput.length > 30}
           className="button-19"
           color="primary"
           onClick={async () => {
