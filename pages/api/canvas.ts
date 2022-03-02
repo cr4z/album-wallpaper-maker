@@ -1,19 +1,18 @@
-async function generateCanvas(
-  srcs: string[],
-  cols: number,
-  rows: number,
-  inform: (x: string) => void
-): Promise<HTMLCanvasElement> {
-  inform("Retrieving album covers...");
-  let images: HTMLImageElement[] = srcs.map(src => {
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import type { NextApiRequest, NextApiResponse } from "next";
+
+type CanvasElem = HTMLCanvasElement;
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<CanvasElem>) {
+  const { cols, rows, srcs } = req.body;
+
+  let images: HTMLImageElement[] = srcs.map((src: string) => {
     const img = new Image();
     img.src = src;
     return img;
   });
   images = stripImages(images);
-  inform("Loading album covers...");
   images = await waitForImagesToLoad(images);
-  inform("Making your wallpaper...");
   const extents = Math.max(cols, rows);
   const imgSize = 3000 / extents;
   const canvas = document.createElement("canvas");
@@ -33,8 +32,7 @@ async function generateCanvas(
     }
   } else throw new Error("No context produced!");
 
-  inform("");
-  return canvas;
+  return res.status(200).json(canvas);
 }
 
 async function waitForImagesToLoad(images: HTMLImageElement[]): Promise<HTMLImageElement[]> {
@@ -70,18 +68,3 @@ function stripImages(images: HTMLImageElement[]): HTMLImageElement[] {
   });
   return images;
 }
-
-function downloadCanvas(canvas: HTMLCanvasElement, inform: (x: string) => void, onComplete: () => void) {
-  inform("Creating download...")
-  const url = canvas.toDataURL();
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "album-collage-designer.png";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  onComplete();
-}
-
-export { downloadCanvas, generateCanvas };

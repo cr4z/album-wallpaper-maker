@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { getImgSrcArrayFromInput } from "./itunes";
 import Paginator from "./paginator";
 
 // import react-modal

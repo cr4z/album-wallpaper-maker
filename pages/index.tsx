@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { downloadCanvas, generateCanvas } from "../src/canvas";
 import Controls from "../src/controls";
 import AlbumPickerModal from "../src/modal";
 
@@ -74,20 +73,20 @@ const Home: NextPage = () => {
             disabled={downloadInProgress}
             onClick={async () => {
               setDownloadInProgress(true);
-              const canvas = await generateCanvas(srcs, cols, rows, feedback => {
-                setFeedback(feedback);
-              });
-              downloadCanvas(
-                canvas,
-                feedback => {
-                  setFeedback(feedback);
-                },
-                () => {
-                  setDownloadInProgress(false);
-                  setFeedback("Download complete! Enjoy :)");
-                  setInterval(() => setFeedback(""), 3000);
-                }
-              );
+
+              var srcsString = encodeURIComponent(JSON.stringify(srcs));
+
+              const res = await fetch(`/canvas?srcs=${srcsString}?cols=${srcs}?rows=${srcs}`);
+              const canvas: HTMLCanvasElement = await res.json();
+              const url = canvas.toDataURL();
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = "album-collage-designer.png";
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+
+              setDownloadInProgress(false);
             }}
             className="button-19"
           >
