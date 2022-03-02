@@ -4,11 +4,9 @@ export async function getImgSrcArrayFromInput(searchInput: string): Promise<stri
 
   let response = null;
 
-  const myProxy = "http://cr4z-cors-anywhere.herokuapp.com";
-
   try {
     response = await fetch(
-      `${myProxy}/https://itunes.apple.com/search?term=${encodedInput}&entity=album&media=music`,
+      `https://itunes.apple.com/search?term=${encodedInput}&entity=album&media=music`,
       {
         method: "GET",
       }
