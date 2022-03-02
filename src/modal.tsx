@@ -35,8 +35,12 @@ export default function AlbumPickerModal({ modalOpen, onRequestClose, onSrcSelec
     // set Paginator page to 1
     setPage(1);
 
+    const encodedSearch = encodeURIComponent(search);
+
     // get image srcs
-    const imgSrcs = await getImgSrcArrayFromInput(search);
+    const res = await fetch(`/api/imgSrcs/?search=${encodedSearch}`);
+
+    const imgSrcs: string[] = await res.json();
 
     // update results
     setAlbumSrcs(imgSrcs);
