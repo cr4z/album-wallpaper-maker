@@ -9,6 +9,7 @@ export async function getImgSrcArrayFromInput(searchInput: string): Promise<stri
       `https://itunes.apple.com/search?term=${encodedInput}&entity=album&media=music`,
       {
         method: "GET",
+        mode: "no-cors",
       }
     );
   } catch (e) {
