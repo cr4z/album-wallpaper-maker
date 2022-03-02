@@ -1,6 +1,6 @@
 export async function getImgSrcArrayFromInput(searchInput: string): Promise<string[]> {
   const encodedInput = encodeURIComponent(searchInput).replace(/%20/g, "+");
-  console.log(encodedInput);
+  console.log("1:", encodedInput);
 
   let response = null;
 
@@ -13,9 +13,11 @@ export async function getImgSrcArrayFromInput(searchInput: string): Promise<stri
       }
     );
   } catch (e) {
-    console.log(e);
+    console.log("2:", e);
     return [];
   }
+
+  console.log("3:", response);
 
   let json = await response.json();
   const results = json.results;
