@@ -1,11 +1,20 @@
 export async function getImgSrcArrayFromInput(searchInput: string): Promise<string[]> {
   const encodedInput = encodeURIComponent(searchInput).replace(/%20/g, "+");
-  let response = await fetch(
-    `https://itunes.apple.com/search?term=${encodedInput}&entity=album&media=music`,
-    {
-      method: "GET",
-    }
-  );
+  console.log(encodedInput);
+
+  let response = null;
+
+  try {
+    response = await fetch(
+      `https://itunes.apple.com/search?term=${encodedInput}&entity=album&media=music`,
+      {
+        method: "GET",
+      }
+    );
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
 
   let json = await response.json();
   const results = json.results;
