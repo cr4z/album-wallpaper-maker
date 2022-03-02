@@ -8,8 +8,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const search = decodeURIComponent(encodedSearch);
   const encodedInput = encodeURIComponent(search).replace(/%20/g, "+");
 
-  console.log(encodedInput);
-
   const response = await fetch(
     `https://itunes.apple.com/search?term=${encodedInput}&entity=album&media=music`,
     {
