@@ -1,24 +1,21 @@
+import { createCanvas, Image, loadImage } from "canvas";
+
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type CanvasElem = HTMLCanvasElement;
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse<CanvasElem>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<string>) {
   const { cols, rows, srcs } = req.body;
 
-  let images: HTMLImageElement[] = srcs.map((src: string) => {
-    const img = new Image();
-    img.src = src;
-    return img;
-  });
-  images = stripImages(images);
-  images = await waitForImagesToLoad(images);
+  console.log({ cols, rows, srcs });
+
   const extents = Math.max(cols, rows);
   const imgSize = 3000 / extents;
-  const canvas = document.createElement("canvas");
-  canvas.width = imgSize * cols;
-  canvas.height = imgSize * rows;
+  const width = imgSize * cols;
+  const height = imgSize * rows;
+  const canvas = createCanvas(width, height);
   const ctx = canvas.getContext("2d");
+
+  console.log("1");
 
   if (ctx) {
     let i: number = -1;
@@ -27,44 +24,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         i++;
         const x = colI * imgSize;
         const y = rowI * imgSize;
-        ctx.drawImage(images[i], x, y, imgSize, imgSize);
+        const newImg = await loadImage(srcs[i]);
+        ctx.drawImage(newImg, x, y, imgSize, imgSize);
       }
     }
   } else throw new Error("No context produced!");
 
-  return res.status(200).json(canvas);
-}
+  console.log("3");
 
-async function waitForImagesToLoad(images: HTMLImageElement[]): Promise<HTMLImageElement[]> {
-  const promises: Promise<any>[] = [];
-  images.map(async (image: HTMLImageElement) => {
-    promises.push(
-      new Promise<void>(resolve => {
-        if (image.complete) {
-          if (!(image.naturalWidth === 0)) {
-            if (!(image.naturalHeight === 0)) {
-              //image completely loaded
-              resolve();
-            }
-          }
-        } else {
-          image.onload = () => {
-            resolve();
-          };
-        }
-      })
-    );
-  });
+  const x = canvas.toDataURL();
 
-  await Promise.allSettled(promises);
-
-  return images;
-}
-
-function stripImages(images: HTMLImageElement[]): HTMLImageElement[] {
-  images.map(image => {
-    image.crossOrigin = "anonymous";
-    return image;
-  });
-  return images;
+  return res.status(200).json(x);
 }

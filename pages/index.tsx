@@ -74,13 +74,17 @@ const Home: NextPage = () => {
             onClick={async () => {
               setDownloadInProgress(true);
 
-              var srcsString = encodeURIComponent(JSON.stringify(srcs));
+              const res = await fetch("/api/canvas", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ cols: cols, rows: rows, srcs: srcs }),
+              });
 
-              const res = await fetch(`/canvas?srcs=${srcsString}?cols=${srcs}?rows=${srcs}`);
-              const canvas: HTMLCanvasElement = await res.json();
-              const url = canvas.toDataURL();
+              const dataUrl = await res.text();
+              console.log(dataUrl);
+
               const link = document.createElement("a");
-              link.href = url;
+              link.href = dataUrl;
               link.download = "album-collage-designer.png";
               document.body.appendChild(link);
               link.click();

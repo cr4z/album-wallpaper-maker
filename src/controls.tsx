@@ -67,7 +67,6 @@ export default function Controller({ onNewCols, onNewRows }: Props) {
                 return;
               }
               // execute
-              console.log("asdf");
               setFeedbackStatus(false);
               onNewRows(+rows);
               onNewCols(+cols);
