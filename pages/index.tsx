@@ -74,14 +74,11 @@ const Home: NextPage = () => {
             onClick={async () => {
               setDownloadInProgress(true);
 
-              const res = await fetch(
-                "http://cr4z-cors-anywhere.herokuapp.com/https://album-wallpaper-maker.vercel.app/api/canvas",
-                {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ cols: cols, rows: rows, srcs: srcs }),
-                }
-              );
+              const res = await fetch("/api/canvas", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ cols: cols, rows: rows, srcs: srcs }),
+              });
 
               const dataUrl = await res.text();
               console.log(dataUrl);
