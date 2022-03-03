@@ -81,7 +81,6 @@ const Home: NextPage = () => {
               });
 
               const dataUrl = await res.text();
-              console.log(dataUrl);
 
               const link = document.createElement("a");
               link.href = dataUrl;
